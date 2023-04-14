@@ -1,5 +1,6 @@
 package br.com.connect.appfitnesstracker
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 
 class ImcActivity : AppCompatActivity() {
 
@@ -33,7 +35,25 @@ class ImcActivity : AppCompatActivity() {
             Log.d("teste", "result $result")
 
             val imcResponseId = imcResponse(result)
-            Toast.makeText(this, imcResponseId, Toast.LENGTH_SHORT).show()
+
+            AlertDialog.Builder(this)
+
+                .setTitle(getString(R.string.imc_response, result))
+                .setMessage(imcResponseId)
+                .setPositiveButton(    //opcao 2
+                    android.R.string.ok
+                ) { dialog, which ->
+
+                }
+                .create()
+                .show()
+
+//            opção 1 da mais trabalho pra escrever
+//            dialog.setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener {
+//                override fun onClick(dialog: DialogInterface?, which: Int) {
+//
+//                }
+//            })
         }
     }
 
