@@ -40,17 +40,14 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        val adapter = MainAdapter(mainItems, object : OnItemClickListener {
-            override fun onClick(id: Int) {
-                when(id) {
-                    1 -> {
+        val adapter = MainAdapter(mainItems) { id ->
+            when (id) {
+                1 -> {
                     val intent = Intent(this@MainActivity, ImcActivity::class.java)
                     startActivity(intent)
                 }
-                }
             }
-
-        })
+        }
         rvMain = findViewById(R.id.rv_main)
         rvMain.adapter = adapter
         rvMain.layoutManager = GridLayoutManager(this, 2)
@@ -64,8 +61,8 @@ class MainActivity : AppCompatActivity() {
 
     private inner class MainAdapter(
         private val mainItems: List<MainItem>,
-        private val onItemClickListener: OnItemClickListener
-        ) :
+        private val onItemClickListener: (Int) -> Unit,
+    ) :
         RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         //      1 Qual é o layout XML da celula especifica (item)
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -87,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         private inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bind(item: MainItem) {
-                val img:  ImageView = itemView.findViewById(R.id.item_img_icon)
+                val img: ImageView = itemView.findViewById(R.id.item_img_icon)
                 val name: TextView = itemView.findViewById(R.id.item_txt_name)
                 val container: LinearLayout = itemView.findViewById(R.id.item_container_imc)
 
@@ -95,14 +92,12 @@ class MainActivity : AppCompatActivity() {
                 name.setText(item.textStringId)
                 container.setBackgroundColor(item.color)
 
-                container.setOnClickListener{
-                    onItemClickListener.onClick(item.id)
+                container.setOnClickListener {
+                    onItemClickListener.invoke(item.id)
                 }
             }
         }
     }
-
-
 
 
 }
