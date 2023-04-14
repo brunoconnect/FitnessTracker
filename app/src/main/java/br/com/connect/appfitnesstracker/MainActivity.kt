@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MainActivity : AppCompatActivity(), OnItemClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var rvMain: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,17 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             )
         )
 
-        val adapter = MainAdapter(mainItems, this)
+        val adapter = MainAdapter(mainItems, object : OnItemClickListener {
+            override fun onClick(id: Int) {
+                when(id) {
+                    1 -> {
+                    val intent = Intent(this@MainActivity, ImcActivity::class.java)
+                    startActivity(intent)
+                }
+                }
+            }
+
+        })
         rvMain = findViewById(R.id.rv_main)
         rvMain.adapter = adapter
         rvMain.layoutManager = GridLayoutManager(this, 2)
@@ -48,14 +58,9 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     }
 
-    override fun onClick(id: Int) {
-        when(id) {
-            1 -> {
-                val intent = Intent(this, ImcActivity::class.java)
-                startActivity(intent)
-            }
-        }
-    }
+//    override fun onClick(id: Int) {
+//
+//    }
 
     private inner class MainAdapter(
         private val mainItems: List<MainItem>,
