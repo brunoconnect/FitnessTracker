@@ -1,5 +1,6 @@
 package br.com.connect.appfitnesstracker
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     private lateinit var rvMain: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        val adapter = MainAdapter(mainItems)
+        val adapter = MainAdapter(mainItems, this)
         rvMain = findViewById(R.id.rv_main)
         rvMain.adapter = adapter
         rvMain.layoutManager = GridLayoutManager(this, 2)
@@ -47,8 +48,20 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private inner class MainAdapter(private val mainItems: List<MainItem>) :
-        RecyclerView.Adapter<MainViewHolder>() {
+    override fun onClick(id: Int) {
+        when(id) {
+            1 -> {
+                val intent = Intent(this, ImcActivity::class.java)
+                startActivity(intent)
+            }
+        }
+    }
+
+    private inner class MainAdapter(
+        private val mainItems: List<MainItem>,
+        private val onItemClickListener: OnItemClickListener
+        ) :
+        RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         //      1 Qual é o layout XML da celula especifica (item)
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
             val view = layoutInflater.inflate(R.layout.main_item, parent, false)
@@ -66,17 +79,25 @@ class MainActivity : AppCompatActivity() {
         override fun getItemCount(): Int {
             return mainItems.size
         }
-    }
 
-    private class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MainItem) {
-            val img:  ImageView = itemView.findViewById(R.id.item_img_icon)
-            val name: TextView = itemView.findViewById(R.id.item_txt_name)
-            val container: LinearLayout = itemView.findViewById(R.id.item_container_imc)
+        private inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            fun bind(item: MainItem) {
+                val img:  ImageView = itemView.findViewById(R.id.item_img_icon)
+                val name: TextView = itemView.findViewById(R.id.item_txt_name)
+                val container: LinearLayout = itemView.findViewById(R.id.item_container_imc)
 
-            img.setImageResource(item.drawableId)
-            name.setText(item.textStringId)
-            container.setBackgroundColor(item.color)
+                img.setImageResource(item.drawableId)
+                name.setText(item.textStringId)
+                container.setBackgroundColor(item.color)
+
+                container.setOnClickListener{
+                    onItemClickListener.onClick(item.id)
+                }
+            }
         }
     }
+
+
+
+
 }
