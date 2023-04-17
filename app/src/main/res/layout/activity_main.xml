@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -13,10 +13,7 @@
         android:layout_width="match_parent"
         tools:listitem="@layout/main_item"
         tools:itemCount="5"
-        android:layout_height="match_parent">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

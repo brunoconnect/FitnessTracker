@@ -1,11 +1,12 @@
 package br.com.connect.appfitnesstracker.model
 
 import androidx.room.TypeConverter
-import java.util.Date
+import java.util.*
 
 class DateConverter {
+
     @TypeConverter
-    fun toDate(dateLong: Long?): Date? {
+    fun toDate(dateLong: Long?) : Date? {
         return if (dateLong != null) Date(dateLong) else null
     }
 
@@ -13,4 +14,5 @@ class DateConverter {
     fun fromDate(date: Date?): Long? {
         return date?.time
     }
+
 }
