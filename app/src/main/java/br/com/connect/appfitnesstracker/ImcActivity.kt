@@ -1,7 +1,6 @@
 package br.com.connect.appfitnesstracker
 
 import android.content.Context
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +10,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import br.com.connect.appfitnesstracker.model.Calc
+
 
 class ImcActivity : AppCompatActivity() {
 
@@ -45,6 +46,19 @@ class ImcActivity : AppCompatActivity() {
                 .setPositiveButton(
                     android.R.string.ok
                 ) { dialog, which ->
+
+                }
+                .setNegativeButton(R.string.save){ dialog, which ->
+                    Thread {
+                        val app = application as App
+                        val dao = app.db.calcDao()
+                        dao.insert(Calc(type = "IMC", res = result))
+
+                        runOnUiThread{
+                            Toast.makeText(this@ImcActivity, R.string.saved, Toast.LENGTH_LONG).show()
+                        }
+
+                    }.start()
 
                 }
                 .create()
